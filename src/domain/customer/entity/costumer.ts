@@ -3,7 +3,9 @@
 // - Entity
 // Customer.ts (Business Rules)
 
+import Entity from "../../@shared/entity/entity.abstract";
 import EventDispatcher from "../../@shared/event/event-dispatcher";
+import NotificationError from "../../@shared/notification/notification.error";
 import CustomerAddressChangedEvent from "../event/customer-address-changed.event";
 import Address from "../value-object/address";
 
@@ -12,8 +14,7 @@ import Address from "../value-object/address";
 // Entity / Model
 // - Customer.ts with getters and setters
 
-export default class Customer {
-  private id: string;
+export default class Customer extends Entity {
   private name: string;
   private address!: Address;
   private active: boolean = false;
@@ -21,9 +22,13 @@ export default class Customer {
   private eventDispatcher: EventDispatcher;
 
   constructor(id: string, name: string) {
+    super();
     this.id = id;
     this.name = name;
     this.validate();
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors());
+    }
   }
 
   set EventDispatcher(eventDispatcher: EventDispatcher) {
@@ -32,11 +37,17 @@ export default class Customer {
 
   validate() {
     if (this.name.length === 0) {
-      throw new Error("Name is required");
+      this.notification.addError({
+        context: "Customer",
+        message: "Name is required",
+      });
     }
 
     if (this.id.length === 0) {
-      throw new Error("Id is required");
+      this.notification.addError({
+        context: "Customer",
+        message: "Id is required",
+      });
     }
   }
 

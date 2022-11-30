@@ -1,3 +1,4 @@
 {
-  "jestrunner.configPath": "jest"
+  "jestrunner.configPath": "",
+  "jestrunner.jestCommand": ""
 }
