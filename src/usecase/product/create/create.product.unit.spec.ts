@@ -28,12 +28,14 @@ describe("Unit Test create product use case", () => {
     });
   });
 
-  it("should throw an error when nam is missing", async () => {
+  it("should throw an error when name is missing", async () => {
     const customerRepository = MockRepository();
     const useCase = new CreateProductUseCase(customerRepository);
 
     input.name = "";
 
-    await expect(useCase.execute(input)).rejects.toThrow("Name is required");
+    await expect(useCase.execute(input)).rejects.toThrow(
+      "Product: Name is required"
+    );
   });
 });

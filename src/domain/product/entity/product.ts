@@ -53,6 +53,9 @@ export default class Product extends Entity implements ProductInterface {
   changePrice(price: number) {
     this.price = price;
     this.validate();
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors());
+    }
   }
 
   getPrice(): number {
@@ -66,5 +69,8 @@ export default class Product extends Entity implements ProductInterface {
   changeName(name: string) {
     this.name = name;
     this.validate();
+    if (this.notification.hasErrors()) {
+      throw new NotificationError(this.notification.getErrors());
+    }
   }
 }
